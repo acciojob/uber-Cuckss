@@ -1,13 +1,18 @@
 package com.driver.services.impl;
 
 import com.driver.model.Cab;
+import com.driver.model.TripBooking;
+import com.driver.model.TripStatus;
 import com.driver.repository.CabRepository;
+import com.driver.repository.TripBookingRepository;
 import com.driver.services.DriverService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.driver.model.Driver;
 import com.driver.repository.DriverRepository;
+
+import java.util.List;
 
 @Service
 public class DriverServiceImpl implements DriverService {
@@ -21,18 +26,40 @@ public class DriverServiceImpl implements DriverService {
 	@Override
 	public void register(String mobile, String password){
 		//Save a driver in the database having given details and a cab with ratePerKm as 10 and availability as True by default.
-
+        Driver driver=new Driver();
+		driver.setMobile(mobile);
+		driver.setPassword(password);
+		Cab cab=new Cab();
+		cab.setPerKmRate(10);
+		cab.setAvailable(true);
+		driver.setCab(cab);
+		cab.setDriver(driver);
+		driverRepository3.save(driver);
 	}
 
 	@Override
 	public void removeDriver(int driverId){
 		// Delete driver without using deleteById function
-
+        Driver driver=driverRepository3.findById(driverId).get();
+		driverRepository3.delete(driver);
 	}
 
 	@Override
 	public void updateStatus(int driverId){
 		//Set the status of respective car to unavailable
-
+		Driver driver=driverRepository3.findById(driverId).get();
+		List<TripBooking> listOfTrips=driver.getTripBookingList();
+		Cab cab=driver.getCab();
+		TripBooking lastTrip;
+		if(listOfTrips.size()==0){
+			cab.setAvailable(true);
+		}else{
+			lastTrip=listOfTrips.get(listOfTrips.size()-1);
+			if(lastTrip.getStatus().equals(TripStatus.CONFIRMED)){
+				cab.setAvailable(false);
+			}else{
+				cab.setAvailable(true);
+			}
+		}
 	}
 }
