@@ -48,18 +48,22 @@ public class DriverServiceImpl implements DriverService {
 	public void updateStatus(int driverId){
 		//Set the status of respective car to unavailable
 		Driver driver=driverRepository3.findById(driverId).get();
-		List<TripBooking> listOfTrips=driver.getTripBookingList();
-		Cab cab=driver.getCab();
-		TripBooking lastTrip;
-		if(listOfTrips.size()==0){
-			cab.setAvailable(true);
-		}else{
-			lastTrip=listOfTrips.get(listOfTrips.size()-1);
-			if(lastTrip.getStatus().equals(TripStatus.CONFIRMED)){
-				cab.setAvailable(false);
-			}else{
-				cab.setAvailable(true);
-			}
-		}
+//		List<TripBooking> listOfTrips=driver.getTripBookingList();
+//		Cab cab=driver.getCab();
+//		TripBooking lastTrip;
+//		if(listOfTrips.size()==0){
+//			cab.setAvailable(true);
+//		}else{
+//			lastTrip=listOfTrips.get(listOfTrips.size()-1);
+//			if(lastTrip.getStatus().equals(TripStatus.CONFIRMED)){
+//				cab.setAvailable(false);
+//			}else{
+//				cab.setAvailable(true);
+//			}
+//		}
+		Cab cab = driver.getCab();
+
+		cab.setAvailable(Boolean.FALSE);
+		cabRepository3.save(cab);
 	}
 }
