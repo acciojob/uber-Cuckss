@@ -59,7 +59,7 @@ public class CustomerServiceImpl implements CustomerService {
 //		   }
 //	   }
 //	   if(driverAvailable==null){
-//		   throw new Exception("No cab available!");
+//		   throw new Exception("no cab available");
 //	   }
 //		int ratePerKm=driverAvailable.getCab().getPerKmRate();
 //	   int totalBill=ratePerKm*distanceInKm;
@@ -95,7 +95,7 @@ public class CustomerServiceImpl implements CustomerService {
 			}
 		}
 		if(driver==null){
-			throw new Exception("no cab available");
+			throw new Exception("No cab available!");
 		}
 		Customer customer=customerRepository2.findById(customerId).get();
 		newTrip.setCustomer(customer);
